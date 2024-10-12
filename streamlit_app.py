@@ -1,5 +1,5 @@
 import streamlit as st
 
-st.title('🎈 App Name')
+st.title('FSS TELECOMUNICATIONS')
 
-st.write('Hello world!')
+st.info('Aplicativo voltado para otimizações envolvendo superfícies seleticas de frequência.')

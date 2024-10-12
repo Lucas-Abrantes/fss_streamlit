@@ -40,8 +40,8 @@ input_test = pd.read_csv(input_test_url)
 output_test = pd.read_csv(output_test_url)
 
 # Parâmetros ajustáveis pelo usuário
-learning_rate = st.sidebar.slider('Learning Rate', 0.0001, 0.1, 0.009)
-epochs = st.sidebar.slider('Epochs', 10, 500, 150)
+learning_rate = st.sidebar.slider('Learning Rate', 0.0001, 0.1, 2)
+epochs = st.sidebar.slider('Epochs', 10, 500, 500)
 batch_size = st.sidebar.slider('Batch Size', 16, 128, 32)
 patience = st.sidebar.slider('Early Stopping Patience', 5, 50, 15)
 
@@ -73,14 +73,24 @@ if st.button('Train Model'):
 
         # Avaliação do modelo
         y_pred = model.predict(input_test)
-        mse = mean_squared_error(output_test, y_pred)
-        r2 = r2_score(output_test, y_pred)
-        mae = mean_absolute_error(output_test, y_pred)
+
+        # Cálculo das métricas para cada saída
+        metrics = {
+            'h': {'mse': mean_squared_error(output_test['h'], y_pred[:, 0]), 'r2': r2_score(output_test['h'], y_pred[:, 0]), 'mae': mean_absolute_error(output_test['h'], y_pred[:, 0])},
+            'p': {'mse': mean_squared_error(output_test['p'], y_pred[:, 1]), 'r2': r2_score(output_test['p'], y_pred[:, 1]), 'mae': mean_absolute_error(output_test['p'], y_pred[:, 1])},
+            'd1': {'mse': mean_squared_error(output_test['d1'], y_pred[:, 2]), 'r2': r2_score(output_test['d1'], y_pred[:, 2]), 'mae': mean_absolute_error(output_test['d1'], y_pred[:, 2])},
+            'd2': {'mse': mean_squared_error(output_test['d2'], y_pred[:, 3]), 'r2': r2_score(output_test['d2'], y_pred[:, 3]), 'mae': mean_absolute_error(output_test['d2'], y_pred[:, 3])},
+            'w1': {'mse': mean_squared_error(output_test['w1'], y_pred[:, 4]), 'r2': r2_score(output_test['w1'], y_pred[:, 4]), 'mae': mean_absolute_error(output_test['w1'], y_pred[:, 4])},
+            'w2': {'mse': mean_squared_error(output_test['w2'], y_pred[:, 5]), 'r2': r2_score(output_test['w2'], y_pred[:, 5]), 'mae': mean_absolute_error(output_test['w2'], y_pred[:, 5])}
+        }
 
         # Exibir as métricas
-        st.write(f'MSE: {mse}')
-        st.write(f'R2 Score: {r2}')
-        st.write(f'MAE: {mae}')
+        for key, values in metrics.items():
+            st.write(f"**Metrics for {key}:**")
+            st.write(f"MSE: {values['mse']}")
+            st.write(f"R2: {values['r2']}")
+            st.write(f"MAE: {values['mae']}")
+            st.write('')
 
         # Plotar a função de perda
         fig, ax = plt.subplots()

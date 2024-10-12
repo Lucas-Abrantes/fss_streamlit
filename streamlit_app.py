@@ -1,15 +1,14 @@
 import streamlit as st
 import pandas as pd
 import tensorflow as tf
+from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import EarlyStopping
 import numpy as np
-from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-
-
+import requests
 
 st.title('FSS TELECOMUNICATIONS')
 
@@ -23,40 +22,30 @@ with st.expander('Data'):
     st.write(df_fss)
 
     st.write('**Inputs**')
-    # Seleciona as colunas desejadas para X
     X = df_fss.drop(['BW1', 'BW2', 'RF1', 'RF2'], axis=1)   
     st.write(X)
 
     st.write('**Outputs**')
-    # Seleciona as colunas desejadas para y
     y = df_fss.drop(['h', 'p', 'd1', 'd2', 'w1', 'w2'], axis=1)
     st.write(y)
 
+# Baixar o modelo salvo
+model_url = 'https://github.com/Lucas-Abrantes/fss_streamlit/blob/master/model.keras?raw=true'
+model_path = 'model.keras'
 
+# Baixar o arquivo do modelo
+response = requests.get(model_url)
+with open(model_path, 'wb') as f:
+    f.write(response.content)
 
-
-
-# Carregar os dados
-input_train = pd.read_csv('https://raw.githubusercontent.com/Lucas-Abrantes/fss_streamlit/refs/heads/master/train/input_train.csv')
-output_train = pd.read_csv('https://raw.githubusercontent.com/Lucas-Abrantes/fss_streamlit/refs/heads/master/train/output_train.csv')
-input_test = pd.read_csv('https://raw.githubusercontent.com/Lucas-Abrantes/fss_streamlit/refs/heads/master/test/input_test.csv')
-output_test = pd.read_csv('https://raw.githubusercontent.com/Lucas-Abrantes/fss_streamlit/refs/heads/master/test/output_test.csv')
-
-# Título e descrição
-
-
-st.title('FSS Neural Network')
-st.write('Ajuste os parâmetros para treinar a rede neural usando um modelo previamente salvo.')
+# Carregar o modelo salvo
+model = load_model(model_path)
 
 # Parâmetros ajustáveis pelo usuário
 learning_rate = st.sidebar.slider('Learning Rate', 0.0001, 0.1, 0.009)
 epochs = st.sidebar.slider('Epochs', 10, 500, 150)
 batch_size = st.sidebar.slider('Batch Size', 16, 128, 32)
 patience = st.sidebar.slider('Early Stopping Patience', 5, 50, 15)
-
-# Carregar o modelo salvo
-model_path = 'https://github.com/Lucas-Abrantes/fss_streamlit/blob/master/model.keras'
-model = load_model(model_path)
 
 # Atualizar a taxa de aprendizado do otimizador
 optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)

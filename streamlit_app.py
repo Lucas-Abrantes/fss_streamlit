@@ -40,7 +40,7 @@ input_test = pd.read_csv(input_test_url)
 output_test = pd.read_csv(output_test_url)
 
 # Parâmetros ajustáveis pelo usuário
-learning_rate = st.sidebar.slider('Learning Rate', 0.0001, 0.1, 2)
+learning_rate = st.sidebar.slider('Learning Rate', 0.0001, 0.1, 0.009)
 epochs = st.sidebar.slider('Epochs', 10, 500, 500)
 batch_size = st.sidebar.slider('Batch Size', 16, 128, 32)
 patience = st.sidebar.slider('Early Stopping Patience', 5, 50, 15)

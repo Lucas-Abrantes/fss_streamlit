@@ -36,10 +36,10 @@ with st.expander('Data'):
 
 
 # Carregar os dados
-input_train = pd.read_csv('https://github.com/Lucas-Abrantes/fss_streamlit/blob/master/train/input_train.csv')
-output_train = pd.read_csv('https://github.com/Lucas-Abrantes/fss_streamlit/blob/master/train/output_train.csv')
-input_test = pd.read_csv('https://github.com/Lucas-Abrantes/fss_streamlit/blob/master/test/input_test.csv')
-output_test = pd.read_csv('https://github.com/Lucas-Abrantes/fss_streamlit/blob/master/test/output_test.csv')
+input_train = pd.read_csv('https://raw.githubusercontent.com/Lucas-Abrantes/fss_streamlit/refs/heads/master/train/input_train.csv')
+output_train = pd.read_csv('https://raw.githubusercontent.com/Lucas-Abrantes/fss_streamlit/refs/heads/master/train/output_train.csv')
+input_test = pd.read_csv('https://raw.githubusercontent.com/Lucas-Abrantes/fss_streamlit/refs/heads/master/test/input_test.csv')
+output_test = pd.read_csv('https://raw.githubusercontent.com/Lucas-Abrantes/fss_streamlit/refs/heads/master/test/output_test.csv')
 
 # Título e descrição
 
